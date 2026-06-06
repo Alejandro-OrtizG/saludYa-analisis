@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SaludYa — Documentación de pruebas</title>
+  <style>
+    :root {
+      --bg:        #0f1117;
+      --surface:   #1a1d27;
+      --surface2:  #222636;
+      --border:    #2e3347;
+      --accent:    #5b8dee;
+      --accent2:   #7c3aed;
+      --green:     #22c55e;
+      --red:       #ef4444;
+      --yellow:    #f59e0b;
+      --cyan:      #06b6d4;
+      --text:      #e2e8f0;
+      --text-dim:  #8892a4;
+      --text-mute: #4b5563;
+      --code-bg:   #111827;
+      --radius:    10px;
+      --font-mono: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.7;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    nav {
+      width: 260px;
+      min-width: 260px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 28px 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .nav__logo {
+      padding: 0 20px 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+
+    .nav__logo h1 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -.3px;
+    }
+
+    .nav__logo p {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    .nav__section {
+      padding: 6px 20px 2px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--text-mute);
+      margin-top: 10px;
+    }
+
+    nav a {
+      display: block;
+      padding: 6px 20px 6px 24px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 13.5px;
+      border-left: 2px solid transparent;
+      transition: all .15s;
+    }
+
+    nav a:hover {
+      color: var(--text);
+      background: var(--surface2);
+      border-left-color: var(--border);
+    }
+
+    nav a.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: rgba(91,141,238,.08);
+    }
+
+    nav a .tag {
+      float: right;
+      font-size: 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      color: var(--text-mute);
+      font-family: var(--font-mono);
+    }
+
+    /* ── Main content ── */
+    main {
+      flex: 1;
+      max-width: 900px;
+      padding: 44px 52px;
+      overflow-x: hidden;
+    }
+
+    /* ── Sections ── */
+    section {
+      margin-bottom: 64px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-header h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -.4px;
+    }
+
+    .badge {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .badge--blue   { background: rgba(91,141,238,.15); color: var(--accent); }
+    .badge--purple { background: rgba(124,58,237,.15); color: #a78bfa; }
+    .badge--green  { background: rgba(34,197,94,.12);  color: var(--green); }
+    .badge--cyan   { background: rgba(6,182,212,.12);  color: var(--cyan); }
+    .badge--yellow { background: rgba(245,158,11,.12); color: var(--yellow); }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, rgba(91,141,238,.08) 0%, rgba(124,58,237,.06) 100%);
+      border: 1px solid rgba(91,141,238,.2);
+      border-radius: var(--radius);
+      padding: 32px 36px;
+      margin-bottom: 52px;
+    }
+
+    .hero h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -.6px;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #5b8dee, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--text-dim);
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    .hero__meta {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .hero__stat {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .hero__stat strong {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .hero__stat span {
+      font-size: 11px;
+      color: var(--text-mute);
+      margin-top: 2px;
+    }
+
+    .hero__divider {
+      width: 1px;
+      height: 40px;
+      background: var(--border);
+      align-self: center;
+    }
+
+    /* ── Typedef cards ── */
+    .typedef {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .typedef__head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .typedef__head:hover { background: #262a3a; }
+
+    .typedef__name {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--cyan);
+    }
+
+    .typedef__desc {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    .typedef__chevron {
+      margin-left: auto;
+      color: var(--text-mute);
+      transition: transform .2s;
+    }
+
+    .typedef.open .typedef__chevron { transform: rotate(180deg); }
+
+    .typedef__body {
+      display: none;
+      padding: 0;
+    }
+
+    .typedef.open .typedef__body { display: block; }
+
+    .prop-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .prop-table th {
+      text-align: left;
+      padding: 8px 20px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--text-mute);
+      background: rgba(0,0,0,.2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .prop-table td {
+      padding: 9px 20px;
+      font-size: 13.5px;
+      border-bottom: 1px solid rgba(46,51,71,.6);
+      vertical-align: top;
+    }
+
+    .prop-table tr:last-child td { border-bottom: none; }
+
+    .prop-table td:first-child {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #f9a8d4;
+      width: 160px;
+    }
+
+    .prop-table td:nth-child(2) {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #86efac;
+      width: 180px;
+    }
+
+    .prop-table td:last-child { color: var(--text-dim); }
+
+    /* ── Function cards ── */
+    .fn-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .fn-card__head {
+      padding: 16px 20px 14px;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .fn-card__sig {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .fn-card__sig .fn-name { color: #fbbf24; }
+    .fn-card__sig .fn-param { color: #93c5fd; }
+    .fn-card__sig .fn-type  { color: #86efac; }
+
+    .fn-card__summary {
+      font-size: 13.5px;
+      color: var(--text-dim);
+    }
+
+    .fn-card__body {
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .fn-section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--text-mute);
+      margin-bottom: 6px;
+    }
+
+    .param-row {
+      display: grid;
+      grid-template-columns: 140px 150px 1fr;
+      gap: 10px;
+      font-size: 13px;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(46,51,71,.5);
+    }
+
+    .param-row:last-child { border-bottom: none; }
+
+    .param-name { font-family: var(--font-mono); color: #f9a8d4; }
+    .param-type { font-family: var(--font-mono); color: #86efac; font-size: 12px; }
+    .param-desc { color: var(--text-dim); }
+
+    .returns-row {
+      display: flex;
+      gap: 12px;
+      font-size: 13px;
+      align-items: flex-start;
+    }
+
+    .returns-type {
+      font-family: var(--font-mono);
+      color: #86efac;
+      font-size: 12px;
+      min-width: 130px;
+      padding-top: 1px;
+    }
+
+    .returns-desc { color: var(--text-dim); }
+
+    /* ── Code blocks ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .kw   { color: #c084fc; }
+    .fn   { color: #fbbf24; }
+    .str  { color: #6ee7b7; }
+    .cm   { color: var(--text-mute); font-style: italic; }
+    .num  { color: #fb923c; }
+    .var  { color: #93c5fd; }
+    .op   { color: #e879f9; }
+    .type { color: #67e8f9; }
+
+    /* ── Suite cards ── */
+    .suite-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .suite-card__head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .suite-card__num {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    .suite-card__name { font-weight: 600; font-size: 15px; }
+
+    .suite-card__count {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text-mute);
+      font-family: var(--font-mono);
+    }
+
+    .test-list {
+      list-style: none;
+      padding: 8px 0;
+    }
+
+    .test-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 7px 20px;
+      font-size: 13.5px;
+      color: var(--text-dim);
+      border-bottom: 1px solid rgba(46,51,71,.4);
+    }
+
+    .test-list li:last-child { border-bottom: none; }
+
+    .test-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: rgba(34,197,94,.15);
+      border: 1.5px solid var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .test-icon svg { width: 8px; height: 8px; stroke: var(--green); stroke-width: 2.5; fill: none; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      nav { display: none; }
+      main { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════ SIDEBAR ═══════ -->
+<nav>
+  <div class="nav__logo">
+    <h1>SaludYa Tests</h1>
+    <p>tests/run.js · v1.0.0</p>
+  </div>
+
+  <div class="nav__section">General</div>
+  <a href="#overview" class="active">Descripción general</a>
+
+  <div class="nav__section">Tipos</div>
+  <a href="#typedef-cita">Cita <span class="tag">typedef</span></a>
+  <a href="#typedef-slotagenda">SlotAgenda <span class="tag">typedef</span></a>
+  <a href="#typedef-storage">StorageLike <span class="tag">typedef</span></a>
+  <a href="#typedef-matcher">Matcher <span class="tag">typedef</span></a>
+  <a href="#typedef-suite">Suite / TestResult <span class="tag">typedef</span></a>
+
+  <div class="nav__section">Storage</div>
+  <a href="#fn-crearStorage">crearStorage()</a>
+
+  <div class="nav__section">CRUD</div>
+  <a href="#fn-getCitas">getCitas()</a>
+  <a href="#fn-setCitas">setCitas()</a>
+  <a href="#fn-getAgenda">getAgenda()</a>
+  <a href="#fn-setAgenda">setAgenda()</a>
+  <a href="#fn-limpiarTodo">limpiarTodo()</a>
+
+  <div class="nav__section">Lógica de negocio</div>
+  <a href="#fn-isReservada">isReservada()</a>
+  <a href="#fn-esMismoDia">esMismoDia()</a>
+  <a href="#fn-cambiarEstado">cambiarEstado()</a>
+  <a href="#fn-confirmarCita">confirmarCita()</a>
+
+  <div class="nav__section">Fixtures</div>
+  <a href="#fn-nuevaCita">nuevaCita()</a>
+  <a href="#fn-nuevoSlot">nuevoSlot()</a>
+
+  <div class="nav__section">Framework</div>
+  <a href="#fn-describir">describir()</a>
+  <a href="#fn-it">it()</a>
+  <a href="#fn-expect">expect()</a>
+
+  <div class="nav__section">Suites (37 tests)</div>
+  <a href="#suite-1">1. Almacenamiento <span class="tag">6</span></a>
+  <a href="#suite-2">2. Citas — CRUD <span class="tag">7</span></a>
+  <a href="#suite-3">3. Filtro por médico <span class="tag">6</span></a>
+  <a href="#suite-4">4. Agenda — franjas <span class="tag">9</span></a>
+  <a href="#suite-5">5. Flujo completo <span class="tag">9</span></a>
+</nav>
+
+<!-- ═══════ MAIN ═══════ -->
+<main>
+
+  <!-- HERO -->
+  <div class="hero" id="overview">
+    <h1>Pruebas de integración</h1>
+    <p>
+      Verifica el flujo completo de SaludYa: almacenamiento, CRUD de citas,
+      filtros por médico, gestión de agenda y la integración paciente&nbsp;→&nbsp;médico.
+      No requiere dependencias externas ni DOM — ejecutable desde terminal con
+      <code style="font-family:var(--font-mono);font-size:13px;color:#6ee7b7">node tests/run.js</code>.
+    </p>
+    <div class="hero__meta">
+      <div class="hero__stat">
+        <strong>37</strong>
+        <span>tests totales</span>
+      </div>
+      <div class="hero__divider"></div>
+      <div class="hero__stat">
+        <strong>5</strong>
+        <span>suites</span>
+      </div>
+      <div class="hero__divider"></div>
+      <div class="hero__stat">
+        <strong>0</strong>
+        <span>dependencias</span>
+      </div>
+      <div class="hero__divider"></div>
+      <div class="hero__stat">
+        <strong>Node</strong>
+        <span>entorno</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TYPEDEFS ═══ -->
+  <section>
+    <div class="section-header">
+      <h2>Tipos</h2>
+      <span class="badge badge--purple">@typedef</span>
+    </div>
+
+    <!-- Cita -->
+    <div class="typedef open" id="typedef-cita">
+      <div class="typedef__head" onclick="toggle(this)">
+        <span class="typedef__name">Cita</span>
+        <span class="typedef__desc">Representa una cita médica en el sistema.</span>
+        <svg class="typedef__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="typedef__body">
+        <table class="prop-table">
+          <thead><tr><th>Propiedad</th><th>Tipo</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td>id</td><td>string</td><td>Identificador único (ej. <code style="font-family:var(--font-mono);font-size:12px">"cita_1719000000abc"</code>).</td></tr>
+            <tr><td>paciente</td><td>string</td><td>Nombre completo del paciente.</td></tr>
+            <tr><td>medico</td><td>string</td><td>Nombre completo del médico asignado.</td></tr>
+            <tr><td>especialidad</td><td>string</td><td>Especialidad médica (ej. <code style="font-family:var(--font-mono);font-size:12px">"Medicina General"</code>).</td></tr>
+            <tr><td>fecha</td><td>string</td><td>Fecha en formato <code style="font-family:var(--font-mono);font-size:12px">YYYY-MM-DD</code>.</td></tr>
+            <tr><td>hora</td><td>string</td><td>Hora en formato <code style="font-family:var(--font-mono);font-size:12px">HH:mm</code>.</td></tr>
+            <tr><td>estado</td><td>'pendiente'&nbsp;|&nbsp;'confirmada'&nbsp;|&nbsp;'cancelada'&nbsp;|&nbsp;'rechazada'</td><td>Estado actual de la cita.</td></tr>
+            <tr><td>motivo</td><td>string</td><td>Motivo de consulta (puede ser cadena vacía).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SlotAgenda -->
+    <div class="typedef" id="typedef-slotagenda">
+      <div class="typedef__head" onclick="toggle(this)">
+        <span class="typedef__name">SlotAgenda</span>
+        <span class="typedef__desc">Franja horaria de disponibilidad en la agenda del médico.</span>
+        <svg class="typedef__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="typedef__body">
+        <table class="prop-table">
+          <thead><tr><th>Propiedad</th><th>Tipo</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td>id</td><td>string</td><td>Identificador único del slot.</td></tr>
+            <tr><td>medico</td><td>string</td><td>Nombre completo del médico propietario.</td></tr>
+            <tr><td>fecha</td><td>string</td><td>Fecha en formato <code style="font-family:var(--font-mono);font-size:12px">YYYY-MM-DD</code>.</td></tr>
+            <tr><td>horaInicio</td><td>string</td><td>Hora de inicio en formato <code style="font-family:var(--font-mono);font-size:12px">HH:mm</code>.</td></tr>
+            <tr><td>horaFin</td><td>string</td><td>Hora de fin en formato <code style="font-family:var(--font-mono);font-size:12px">HH:mm</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- StorageLike -->
+    <div class="typedef" id="typedef-storage">
+      <div class="typedef__head" onclick="toggle(this)">
+        <span class="typedef__name">StorageLike</span>
+        <span class="typedef__desc">API mínima de Web Storage simulada para Node.js.</span>
+        <svg class="typedef__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="typedef__body">
+        <table class="prop-table">
+          <thead><tr><th>Método</th><th>Firma</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td>getItem</td><td>(key: string) → string|null</td><td>Lee el valor de una clave; devuelve <code style="font-family:var(--font-mono);font-size:12px">null</code> si no existe.</td></tr>
+            <tr><td>setItem</td><td>(key: string, val: string) → void</td><td>Escribe un valor como string.</td></tr>
+            <tr><td>removeItem</td><td>(key: string) → void</td><td>Elimina una clave del storage.</td></tr>
+            <tr><td>clear</td><td>() → void</td><td>Vacía completamente el storage.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Matcher -->
+    <div class="typedef" id="typedef-matcher">
+      <div class="typedef__head" onclick="toggle(this)">
+        <span class="typedef__name">Matcher</span>
+        <span class="typedef__desc">Objeto de aserciones retornado por expect().</span>
+        <svg class="typedef__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="typedef__body">
+        <table class="prop-table">
+          <thead><tr><th>Método</th><th>Firma</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td>toBe</td><td>(esperado: any) → void</td><td>Igualdad estricta (<code style="font-family:var(--font-mono);font-size:12px">===</code>). Lanza <code style="font-family:var(--font-mono);font-size:12px">Error</code> si falla.</td></tr>
+            <tr><td>toBeTruthy</td><td>() → void</td><td>El valor es truthy.</td></tr>
+            <tr><td>toBeFalsy</td><td>() → void</td><td>El valor es falsy.</td></tr>
+            <tr><td>toBeGreaterThan</td><td>(n: number) → void</td><td>El valor numérico es estrictamente mayor que <em>n</em>.</td></tr>
+            <tr><td>toHaveProperty</td><td>(prop: string) → void</td><td>El objeto tiene la propiedad indicada (usando <code style="font-family:var(--font-mono);font-size:12px">in</code>).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Suite / TestResult -->
+    <div class="typedef" id="typedef-suite">
+      <div class="typedef__head" onclick="toggle(this)">
+        <span class="typedef__name">Suite</span>
+        <span class="typedef__desc" style="margin-right:16px">Agrupación de tests bajo un nombre.</span>
+        <span class="typedef__name">TestResult</span>
+        <span class="typedef__desc">Resultado de un test individual.</span>
+        <svg class="typedef__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="typedef__body">
+        <table class="prop-table">
+          <thead><tr><th>Propiedad</th><th>Tipo</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td colspan="3" style="color:var(--text-mute);font-size:11px;padding:8px 20px;background:rgba(0,0,0,.15);font-weight:700;letter-spacing:.5px">SUITE</td></tr>
+            <tr><td>nombre</td><td>string</td><td>Nombre descriptivo de la suite.</td></tr>
+            <tr><td>tests</td><td>TestResult[]</td><td>Lista de resultados de los tests en esta suite.</td></tr>
+            <tr><td colspan="3" style="color:var(--text-mute);font-size:11px;padding:8px 20px;background:rgba(0,0,0,.15);font-weight:700;letter-spacing:.5px">TESTRESULT</td></tr>
+            <tr><td>nombre</td><td>string</td><td>Descripción del comportamiento probado.</td></tr>
+            <tr><td>ok</td><td>boolean</td><td><code style="font-family:var(--font-mono);font-size:12px">true</code> si el test pasó, <code style="font-family:var(--font-mono);font-size:12px">false</code> si falló.</td></tr>
+            <tr><td>error</td><td>string?</td><td>Mensaje del error lanzado (solo cuando <code style="font-family:var(--font-mono);font-size:12px">ok === false</code>).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ STORAGE ═══ -->
+  <section>
+    <div class="section-header">
+      <h2>Simulación de Storage</h2>
+      <span class="badge badge--cyan">Web Storage API</span>
+    </div>
+
+    <div class="fn-card" id="fn-crearStorage">
+      <div class="fn-card__head">
+        <div class="fn-card__sig">
+          <span class="fn-name">crearStorage</span><span style="color:var(--text-dim)">()</span>
+          <span style="color:var(--text-mute)"> → </span>
+          <span class="fn-type">StorageLike</span>
+        </div>
+        <div class="fn-card__summary">
+          Crea un objeto que simula la API <code style="font-family:var(--font-mono);font-size:12px">Web Storage</code>
+          para entornos Node.js. Almacena valores como strings dentro de un objeto con
+          <code style="font-family:var(--font-mono);font-size:12px">Object.create(null)</code>
+          para evitar colisiones con propiedades heredadas.
+        </div>
+      </div>
+      <div class="fn-card__body">
+        <div>
+          <div class="fn-section-label">Retorna</div>
+          <div class="returns-row">
+            <div class="returns-type">StorageLike</div>
+            <div class="returns-desc">Instancia de storage en memoria, independiente por cada llamada.</div>
+          </div>
+        </div>
+        <div>
+          <div class="fn-section-label">Ejemplo</div>
+          <pre><span class="kw">const</span> <span class="var">ls</span> = <span class="fn">crearStorage</span>();
+<span class="var">ls</span>.<span class="fn">setItem</span>(<span class="str">'clave'</span>, <span class="str">'valor'</span>);
+<span class="var">ls</span>.<span class="fn">getItem</span>(<span class="str">'clave'</span>);  <span class="cm">// → 'valor'</span>
+<span class="var">ls</span>.<span class="fn">getItem</span>(<span class="str">'otra'</span>);   <span class="cm">// → null</span></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CRUD ═══ -->
+  <section>
+    <div class="section-header">
+      <h2>Funciones CRUD</h2>
+      <span class="badge badge--blue">localStorage</span>
+    </div>
+
+    <!-- getCitas -->
+    <div class="fn-card" id="fn-getCitas">
+      <div class="fn-card__head">
+        <div class="fn-card__sig">
+          <span class="fn-name">getCitas</span><span style="color:var(--text-dim)">()</span>
+          <span style="color:var(--text-mute)"> → </span>
+          <span class="fn-type">Cita[]</span>
+        </div>
+        <div class="fn-card__summary">
+          Lee y deserializa la lista de citas desde <code style="font-family:var(--font-mono);font-size:12px">localStorage['saludya_citas']</code>.
+          Réplica de <code style="font-family:var(--font-mono);font-size:12px">getCitas()</code> en <code style="font-family:var(--font-mono);font-size:12px">medico/index.html</code>.
+        </div>
+      </div>
+      <div class="fn-card__body">
+        <div>
+          <div class="fn-section-label">Retorna</div>
+          <div class="returns-row">
+            <div class="returns-type">Cita[]</div>
+            <div class="returns-desc">Array de citas. Devuelve <code style="font-family:var(--font-mono);font-size:12px">[]</code> si la clave no existe.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- setCitas -->
+    <div class="fn-card" id="fn-setCitas">
+      <div class="fn-card__head">
+        <div class="fn-card__sig">
+          <span class="fn-name">setCitas</span>(<span class="fn-param">datos</span>: <span class="fn-type">Cita[]</span>)
+          <span style="color:var(--text-mute)"> → </span>
+          <span class="fn-type">void</span>
+        </div>
+        <div class="fn-card__summary">
+          Serializa y persiste la lista de citas en <code style="font-family:var(--font-mono);font-size:12px">localStorage['saludya_citas']</code>.
+        </div>
+      </div>
+      <div class="fn-card__body">
+        <div>
+          <div class="fn-section-label">Parámetros</div>
+          <div class="param-row">
+            <div class="param-name">datos</div>
+            <div class="param-type">Cita[]</div>
+            <div class="param-desc">Lista completa de citas a guardar (sobreescribe el valor anterior).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- getAgenda -->
+    <div class="fn-card" id="fn-getAgenda">
+      <div class="fn-card__head">
+        <div class="fn-card__sig">
+          <span class="fn-name">getAgenda</span><span style="color:var(--text-dim)">()</span>
+          <span style="color:var(--text-mute)"> → </span>
+          <span class="fn-type">SlotAgenda[]</span>
+        </div>
+        <div class="fn-card__summary">
+          Lee y deserializa la lista de franjas desde <code style="font-family:var(--font-mono);font-size:12px">localStorage['saludya_agenda']</code>.
+          Réplica de <code style="font-family:var(--font-mono);font-size:12px">getAgenda()</code> en <code style="font-family:var(--font-mono);font-size:12px">medico/pages/gestion-agenda.html</code>.
+        </div>
+      </div>
+      <div class="fn-card__body">
+        <div>
+          <div class="fn-section-label">Retorna</div>
+          <div class="returns-row">
+            <div class="returns-type">SlotAgenda[]</div>
+            <div class="returns-desc">Array de franjas. Devuelve <code style="font-family:var(--font-mono);font-size:12px">[]</code> si la clave no existe.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- setAgenda -->
+    <div class="fn-card" id="fn-setAgenda">
+      <div class="fn-card__head">
+        <div class="fn-card__sig">
+          <span class="fn-name">setAgenda</span>(<span class="fn-param">datos</span>: <span class="fn-type">SlotAgenda[]</span>)
+          <span style="color:var(--text-mute)"> → </span>
+          <span class="fn-type">void</span>
+        </div>
+        <div class="fn-card__summary">
+          Serializa y persiste la lista de franjas en <code style="font-family:var(--font-mono);font-size:12px">localStorage['saludya_agenda']</code>.
+        </div>
+      </div>
+      <div class="fn-card__body">
+        <div>
+          <div class="fn-section-label">Parámetros</div>
+          <div class="param-row">
+            <div class="param-name">datos</div>
+            <div class="param-type">SlotAgenda[]</div>
+            <div class="param-desc">Lista completa de franjas a guardar.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- limpiarTodo -->
+    <div class="fn-card" id="fn-limpiarTodo">
+      <div class="fn-card__head">
+        <div class="fn-card__sig">
+          <span class="fn-name">limpiarTodo</span><span style="color:var(--text-dim)">()</span>
+          <span style="color:var(--text-mute)"> → </span>
+          <span class="fn-type">void</span>
+        </div>
+        <div class="fn-card__summary">
+          Elimina todas las claves de SaludYa de <em>ambos</em> storages
+          (<code style="font-family:var(--font-mono);font-size:12px">saludya_citas</code>,
+          <code style="font-family:var(--font-mono);font-size:12px">saludya_agenda</code>,
+          <code style="font-family:var(--font-mono);font-size:12px">saludya_sesion</code>,
+          <code style="font-family:var(--font-mono);font-size:12px">saludya_nombre</code>).
+          Debe llamarse al inicio y al final de cada test para garantizar aislamiento.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ LÓGICA DE NEGOCIO ═══ -->
+  <section>
+    <div class="section-header">
+      <h2>Lógica de negocio</h2>
+      <span class="badge badge--yellow">Réplicas de .html</span>
+    </div>
+
+    <!-- isReservada -->
+    <div class="fn-card" id="fn-isReservada">
+      <div class="fn-card__head">
+        <div class="fn-card__sig">
+          <span class="fn-name">isReservada</span>(<span class="fn-param">slot</span>: <span class="fn-type">SlotAgenda</span>, <span class="fn-param">citas</span>: <span class="fn-type">Cita[]</span>)
+          <span style="color:var(--text-mute)"> → </span>
+          <span class="fn-type">boolean</span>
+        </div>
+        <div class="fn-card__summary">
+          Determina si una franja de agenda tiene una cita activa asociada.
+          Réplica exacta de <code style="font-family:var(--font-mono);font-size:12px">isReservada()</code> en
+          <code style="font-family:var(--font-mono);font-size:12px">medico/pages/gestion-agenda.html</code>.
+        </div>
+      </div>
+      <div class="fn-card__body">
+        <div>
+          <div class="fn-section-label">Parámetros</div>
+          <div class="param-row">
+            <div class="param-name">slot</div>
+            <div class="param-type">SlotAgenda</div>
+            <div class="param-desc">Franja horaria a evaluar.</div>
+          </div>
+          <div class="param-row">
+            <div class="param-name">citas</div>
+            <div class="param-type">Cita[]</div>
+            <div class="param-desc">Lista de citas activas en el sistema.</div>
+          </div>
+        </div>
+        <div>
+          <div class="fn-section-label">Retorna</div>
+          <div class="returns-row">
+            <div class="returns-type">boolean</div>
+            <div class="returns-desc">
+              <code style="font-family:var(--font-mono);font-size:12px">true</code> si existe una cita con mismo médico, fecha y <code style="font-family:var(--font-mono);font-size:12px">hora === horaInicio</code>
+              en estado <code style="font-family:var(--font-mono);font-size:12px">"pendiente"</code> o <code style="font-family:var(--font-mono);font-size:12px">"confirmada"</code>.
+              Las citas canceladas o rechazadas <strong>no</strong> bloquean la franja.
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="fn-section-label">Ejemplo</div>
+          <pre><span class="kw">const</span> <span class="var">slot</span>  = { <span class="var">medico</span>: <span class="str">'Dra. X'</span>, <span class="var">fecha</span>: <span class="str">'2026-09-01'</span>, <span class="var">horaInicio</span>: <span class="str">'09:00'</span>, <span class="var">horaFin</span>: <span class="str">'09:30'</span>, <span class="var">id</span>: <span class="str">'1'</span> };
+<span class="kw">const</span> <span class="var">citas</span> = [{ <span class="var">medico</span>: <span class="str">'Dra. X'</span>, <span class="var">fecha</span>: <span class="str">'2026-09-01'</span>, <span class="var">hora</span>: <span class="str">'09:00'</span>, <span class="var">estado</span>: <span class="str">'pendiente'</span> }];
+<span class="fn">isReservada</span>(<span class="var">slot</span>, <span class="var">citas</span>); <span class="cm">// → true</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- esMismoDia -->
+    <div class="fn-card" id="fn-esMismoDia">
+      <div class="fn-card__head">
+        <div class="fn-card__sig">
+          <span class="fn-name">esMismoDia</span>(<span class="fn-param">fecha</span>: <span class="fn-type">string</span>, <span class="fn-param">hoy?</span>: <span class="fn-type">Date</span>)
+          <span style="color:var(--text-mute)"> → </span>
+          <span class="fn-type">boolean</span>
+        </div>
+        <div class="fn-card__summary">
+          Comprueba si una fecha ISO corresponde al día actual. La fecha de referencia se inyecta
+          como parámetro para facilitar tests deterministas sin depender del reloj del sistema.
+        </div>
+      </div>
+      <div class="fn-card__body">
+        <div>
+          <div class="fn-section-label">Parámetros</div>
+          <div class="param-row">
+            <div class="param-name">fecha</div>
+            <div class="param-type">string</div>
+            <div class="param-desc">Fecha a evaluar en formato <code style="font-family:var(--font-mono);font-size:12px">YYYY-MM-DD</code>.</div>
+          </div>
+          <div class="param-row">
+            <div class="param-name">hoy</div>
+            <div class="param-type">Date?</div>
+            <div class="param-desc">Fecha de referencia. Por defecto <code style="font-family:var(--font-mono);font-size:12px">new Date()</code>.</div>
+          </div>
+        </div>
+        <div>
+          <div class="fn-section-label">Ejemplo</div>
+          <pre><span class="fn">esMismoDia</span>(<span class="str">'2026-06-06'</span>, <span class="kw">new</span> <span class="fn">Date</span>(<span class="str">'2026-06-06'</span>)); <span class="cm">// → true</span>
+<span class="fn">esMismoDia</span>(<span class="str">'2026-01-01'</span>, <span class="kw">new</span> <span class="fn">Date</span>(<span class="str">'2026-06-06'</span>)); <span class="cm">// → false</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- cambiarEstado -->
+    <div class="fn-card" id="fn-cambiarEstado">
+      <div class="fn-card__head">
+        <div class="fn-card__sig">
+          <span class="fn-name">cambiarEstado</span>(<span class="fn-param">id</span>: <span class="fn-type">string</span>, <span class="fn-param">nuevoEstado</span>: <span class="fn-type">'confirmada' | 'rechazada' | 'cancelada'</span>)
+          <span style="color:var(--text-mute)"> → </span>
+          <span class="fn-type">void</span>
+        </div>
+        <div class="fn-card__summary">
+          Actualiza el estado de una cita en el storage mediante un map inmutable.
+          Solo la cita con el <code style="font-family:var(--font-mono);font-size:12px">id</code> indicado recibe el nuevo estado; el resto no se modifica.
+        </div>
+      </div>
+      <div class="fn-card__body">
+        <div>
+          <div class="fn-section-label">Parámetros</div>
+          <div class="param-row">
+            <div class="param-name">id</div>
+            <div class="param-type">string</div>
+            <div class="param-desc">ID de la cita a modificar.</div>
+          </div>
+          <div class="param-row">
+            <div class="param-name">nuevoEstado</div>
+            <div class="param-type">string</div>
+            <div class="param-desc">Estado destino: <code style="font-family:var(--font-mono);font-size:12px">'confirmada'</code>, <code style="font-family:var(--font-mono);font-size:12px">'rechazada'</code> o <code style="font-family:var(--font-mono);font-size:12px">'cancelada'</code>.</div>
+          </div>
+        </div>
+        <div>
+          <div class="fn-section-label">Implementación</div>
+          <pre><span class="fn">setCitas</span>(<span class="fn">getCitas</span>().<span class="fn">map</span>(<span class="var">c</span> <span class="op">=&gt;</span> <span class="var">c</span>.<span class="var">id</span> <span class="op">===</span> <span class="var">id</span> ? { ...<span class="var">c</span>, <span class="var">estado</span>: <span class="var">nuevoEstado</span> } : <span class="var">c</span>));</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- confirmarCita -->
+    <div class="fn-card" id="fn-confirmarCita">
+      <div class="fn-card__head">
+        <div class="fn-card__sig">
+          <span class="fn-name">confirmarCita</span>({ <span class="fn-param">especialidad</span>, <span class="fn-param">medico</span>, <span class="fn-param">fecha</span>, <span class="fn-param">hora</span> })
+          <span style="color:var(--text-mute)"> → </span>
+          <span class="fn-type">Cita</span>
+        </div>
+        <div class="fn-card__summary">
+          Crea y persiste una nueva cita. Réplica exacta de
+          <code style="font-family:var(--font-mono);font-size:12px">confirmarCita()</code> en
+          <code style="font-family:var(--font-mono);font-size:12px">paciente/pages/cita.html</code>.
+          Lee el nombre del paciente desde <code style="font-family:var(--font-mono);font-size:12px">sessionStorage['saludya_nombre']</code>
+          y traduce los <code style="font-family:var(--font-mono);font-size:12px">value</code> de los
+          <code style="font-family:var(--font-mono);font-size:12px">&lt;select&gt;</code> HTML a nombres legibles.
+        </div>
+      </div>
+      <div class="fn-card__body">
+        <div>
+          <div class="fn-section-label">Parámetros</div>
+          <div class="param-row">
+            <div class="param-name">especialidad</div>
+            <div class="param-type">'medicina_general' | 'dermatologia' | 'pediatria'</div>
+            <div class="param-desc">Value del select de especialidad.</div>
+          </div>
+          <div class="param-row">
+            <div class="param-name">medico</div>
+            <div class="param-type">'dr-paula-garcia' | 'dra-lopez'</div>
+            <div class="param-desc">Value del select de médico.</div>
+          </div>
+          <div class="param-row">
+            <div class="param-name">fecha</div>
+            <div class="param-type">string</div>
+            <div class="param-desc">Fecha en formato <code style="font-family:var(--font-mono);font-size:12px">YYYY-MM-DD</code>.</div>
+          </div>
+          <div class="param-row">
+            <div class="param-name">hora</div>
+            <div class="param-type">string</div>
+            <div class="param-desc">Hora en formato <code style="font-family:var(--font-mono);font-size:12px">HH:mm</code>.</div>
+          </div>
+        </div>
+        <div>
+          <div class="fn-section-label">Retorna</div>
+          <div class="returns-row">
+            <div class="returns-type">Cita</div>
+            <div class="returns-desc">La cita creada, ya persistida en <code style="font-family:var(--font-mono);font-size:12px">localStorage</code>.</div>
+          </div>
+        </div>
+        <div>
+          <div class="fn-section-label">Ejemplo</div>
+          <pre><span class="var">sessionStorage</span>.<span class="fn">setItem</span>(<span class="str">'saludya_nombre'</span>, <span class="str">'Ana Gómez'</span>);
+<span class="kw">const</span> <span class="var">cita</span> = <span class="fn">confirmarCita</span>({
+  <span class="var">especialidad</span>: <span class="str">'dermatologia'</span>,
+  <span class="var">medico</span>:       <span class="str">'dr-paula-garcia'</span>,
+  <span class="var">fecha</span>:        <span class="str">'2026-09-01'</span>,
+  <span class="var">hora</span>:         <span class="str">'09:00'</span>
+});
+<span class="var">cita</span>.<span class="var">paciente</span>;     <span class="cm">// → 'Ana Gómez'</span>
+<span class="var">cita</span>.<span class="var">medico</span>;       <span class="cm">// → 'Dra. Paula García'</span>
+<span class="var">cita</span>.<span class="var">especialidad</span>; <span class="cm">// → 'Dermatología'</span>
+<span class="var">cita</span>.<span class="var">estado</span>;       <span class="cm">// → 'pendiente'</span></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FIXTURES ═══ -->
+  <section>
+    <div class="section-header">
+      <h2>Helpers de fixtures</h2>
+      <span class="badge badge--green">Test helpers</span>
+    </div>
+
+    <!-- nuevaCita -->
+    <div class="fn-card" id="fn-nuevaCita">
+      <div class="fn-card__head">
+        <div class="fn-card__sig">
+          <span class="fn-name">nuevaCita</span>(<span class="fn-param">overrides?</span>: <span class="fn-type">Partial&lt;Cita&gt;</span>)
+          <span style="color:var(--text-mute)"> → </span>
+          <span class="fn-type">Cita</span>
+        </div>
+        <div class="fn-card__summary">
+          Genera un objeto <code style="font-family:var(--font-mono);font-size:12px">Cita</code> con valores predeterminados para usar en tests.
+          Usa el contador interno <code style="font-family:var(--font-mono);font-size:12px">_seq</code> para garantizar IDs únicos entre llamadas.
+        </div>
+      </div>
+      <div class="fn-card__body">
+        <div>
+          <div class="fn-section-label">Defaults</div>
+          <pre>{ <span class="var">id</span>: <span class="str">'cita_t_N'</span>, <span class="var">paciente</span>: <span class="str">'Paciente Test'</span>, <span class="var">medico</span>: <span class="str">'Dra. Paula García'</span>,
+  <span class="var">especialidad</span>: <span class="str">'Medicina General'</span>, <span class="var">fecha</span>: <span class="str">'2026-08-15'</span>, <span class="var">hora</span>: <span class="str">'10:00'</span>,
+  <span class="var">estado</span>: <span class="str">'pendiente'</span>, <span class="var">motivo</span>: <span class="str">''</span> }</pre>
+        </div>
+        <div>
+          <div class="fn-section-label">Ejemplo</div>
+          <pre><span class="fn">nuevaCita</span>();
+<span class="cm">// → { id: 'cita_t_1', paciente: 'Paciente Test', estado: 'pendiente', ... }</span>
+
+<span class="fn">nuevaCita</span>({ <span class="var">estado</span>: <span class="str">'confirmada'</span>, <span class="var">fecha</span>: <span class="str">'2026-10-01'</span> });
+<span class="cm">// → { id: 'cita_t_2', ..., estado: 'confirmada', fecha: '2026-10-01' }</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- nuevoSlot -->
+    <div class="fn-card" id="fn-nuevoSlot">
+      <div class="fn-card__head">
+        <div class="fn-card__sig">
+          <span class="fn-name">nuevoSlot</span>(<span class="fn-param">overrides?</span>: <span class="fn-type">Partial&lt;SlotAgenda&gt;</span>)
+          <span style="color:var(--text-mute)"> → </span>
+          <span class="fn-type">SlotAgenda</span>
+        </div>
+        <div class="fn-card__summary">
+          Genera un objeto <code style="font-family:var(--font-mono);font-size:12px">SlotAgenda</code> con valores predeterminados.
+          Usa el mismo contador <code style="font-family:var(--font-mono);font-size:12px">_seq</code> que <code style="font-family:var(--font-mono);font-size:12px">nuevaCita()</code>.
+        </div>
+      </div>
+      <div class="fn-card__body">
+        <div>
+          <div class="fn-section-label">Defaults</div>
+          <pre>{ <span class="var">id</span>: <span class="str">'slot_t_N'</span>, <span class="var">medico</span>: <span class="str">'Dra. Paula García'</span>, <span class="var">fecha</span>: <span class="str">'2026-08-15'</span>,
+  <span class="var">horaInicio</span>: <span class="str">'10:00'</span>, <span class="var">horaFin</span>: <span class="str">'10:30'</span> }</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FRAMEWORK ═══ -->
+  <section>
+    <div class="section-header">
+      <h2>Framework de tests</h2>
+      <span class="badge badge--purple">Jest-like API</span>
+    </div>
+
+    <!-- describir -->
+    <div class="fn-card" id="fn-describir">
+      <div class="fn-card__head">
+        <div class="fn-card__sig">
+          <span class="fn-name">describir</span>(<span class="fn-param">nombre</span>: <span class="fn-type">string</span>, <span class="fn-param">fn</span>: <span class="fn-type">() =&gt; void</span>)
+          <span style="color:var(--text-mute)"> → </span>
+          <span class="fn-type">void</span>
+        </div>
+        <div class="fn-card__summary">
+          Define una suite de tests. Equivale al <code style="font-family:var(--font-mono);font-size:12px">describe()</code> de Jest/Vitest.
+          Registra una nueva Suite en el array global <code style="font-family:var(--font-mono);font-size:12px">suites</code>,
+          la marca como activa y ejecuta <code style="font-family:var(--font-mono);font-size:12px">fn</code> síncronamente.
+        </div>
+      </div>
+      <div class="fn-card__body">
+        <div>
+          <div class="fn-section-label">Ejemplo</div>
+          <pre><span class="fn">describir</span>(<span class="str">'Mi módulo'</span>, () <span class="op">=&gt;</span> {
+  <span class="fn">it</span>(<span class="str">'hace algo'</span>, () <span class="op">=&gt;</span> { ... });
+});</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- it -->
+    <div class="fn-card" id="fn-it">
+      <div class="fn-card__head">
+        <div class="fn-card__sig">
+          <span class="fn-name">it</span>(<span class="fn-param">nombre</span>: <span class="fn-type">string</span>, <span class="fn-param">fn</span>: <span class="fn-type">() =&gt; void</span>)
+          <span style="color:var(--text-mute)"> → </span>
+          <span class="fn-type">void</span>
+        </div>
+        <div class="fn-card__summary">
+          Define y ejecuta un caso de test individual. Equivale a <code style="font-family:var(--font-mono);font-size:12px">it()</code> / <code style="font-family:var(--font-mono);font-size:12px">test()</code> de Jest.
+          Cualquier excepción lanzada marca el test como fallido.
+        </div>
+      </div>
+      <div class="fn-card__body">
+        <div>
+          <div class="fn-section-label">Ejemplo</div>
+          <pre><span class="fn">it</span>(<span class="str">'suma dos números'</span>, () <span class="op">=&gt;</span> {
+  <span class="fn">expect</span>(<span class="num">1</span> <span class="op">+</span> <span class="num">1</span>).<span class="fn">toBe</span>(<span class="num">2</span>);
+});</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- expect -->
+    <div class="fn-card" id="fn-expect">
+      <div class="fn-card__head">
+        <div class="fn-card__sig">
+          <span class="fn-name">expect</span>(<span class="fn-param">valor</span>: <span class="fn-type">any</span>)
+          <span style="color:var(--text-mute)"> → </span>
+          <span class="fn-type">Matcher</span>
+        </div>
+        <div class="fn-card__summary">
+          Crea un objeto de aserciones sobre un valor. Equivale al
+          <code style="font-family:var(--font-mono);font-size:12px">expect()</code> de Jest/Vitest.
+          Cada método lanza un <code style="font-family:var(--font-mono);font-size:12px">Error</code> con mensaje descriptivo si la aserción falla.
+        </div>
+      </div>
+      <div class="fn-card__body">
+        <div>
+          <div class="fn-section-label">Métodos disponibles</div>
+          <div class="param-row">
+            <div class="param-name">.toBe(v)</div>
+            <div class="param-type">===</div>
+            <div class="param-desc">Igualdad estricta.</div>
+          </div>
+          <div class="param-row">
+            <div class="param-name">.toBeTruthy()</div>
+            <div class="param-type">!!v === true</div>
+            <div class="param-desc">El valor es truthy.</div>
+          </div>
+          <div class="param-row">
+            <div class="param-name">.toBeFalsy()</div>
+            <div class="param-type">!!v === false</div>
+            <div class="param-desc">El valor es falsy.</div>
+          </div>
+          <div class="param-row">
+            <div class="param-name">.toBeGreaterThan(n)</div>
+            <div class="param-type">v > n</div>
+            <div class="param-desc">Mayor estricto.</div>
+          </div>
+          <div class="param-row">
+            <div class="param-name">.toHaveProperty(p)</div>
+            <div class="param-type">p in v</div>
+            <div class="param-desc">El objeto posee la propiedad.</div>
+          </div>
+        </div>
+        <div>
+          <div class="fn-section-label">Ejemplo</div>
+          <pre><span class="fn">expect</span>(<span class="fn">getCitas</span>().<span class="var">length</span>).<span class="fn">toBe</span>(<span class="num">1</span>);
+<span class="fn">expect</span>(<span class="var">resultado</span>).<span class="fn">toBeTruthy</span>();
+<span class="fn">expect</span>(<span class="fn">getCitas</span>()[<span class="num">0</span>]).<span class="fn">toHaveProperty</span>(<span class="str">'id'</span>);</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SUITES ═══ -->
+  <section>
+    <div class="section-header">
+      <h2>Suites de pruebas</h2>
+      <span class="badge badge--green">37 tests · 5 suites</span>
+    </div>
+
+    <!-- Suite 1 -->
+    <div class="suite-card" id="suite-1">
+      <div class="suite-card__head">
+        <div class="suite-card__num" style="background:rgba(6,182,212,.15);color:var(--cyan)">1</div>
+        <div class="suite-card__name">Almacenamiento</div>
+        <div class="suite-card__count">6 tests</div>
+      </div>
+      <ul class="test-list">
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>storage simulado está disponible</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>getItem devuelve null cuando la clave no existe</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>setItem y getItem persisten un valor en saludya_citas</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>setItem y getItem persisten un valor en saludya_agenda</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>sessionStorage acepta las claves de sesión del sistema</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>limpiarTodo borra ambas claves</li>
+      </ul>
+    </div>
+
+    <!-- Suite 2 -->
+    <div class="suite-card" id="suite-2">
+      <div class="suite-card__head">
+        <div class="suite-card__num" style="background:rgba(91,141,238,.15);color:var(--accent)">2</div>
+        <div class="suite-card__name">Citas — estructura y CRUD</div>
+        <div class="suite-card__count">7 tests</div>
+      </div>
+      <ul class="test-list">
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>una cita tiene todos los campos obligatorios</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>crear una cita la persiste en localStorage</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>cambiar estado a "confirmada" persiste correctamente</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>rechazar una cita persiste estado "rechazada"</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>cambiar estado no afecta a otras citas</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>múltiples citas conviven sin sobrescribirse</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>getCitas devuelve array vacío cuando no hay datos</li>
+      </ul>
+    </div>
+
+    <!-- Suite 3 -->
+    <div class="suite-card" id="suite-3">
+      <div class="suite-card__head">
+        <div class="suite-card__num" style="background:rgba(245,158,11,.15);color:var(--yellow)">3</div>
+        <div class="suite-card__name">Filtro por médico</div>
+        <div class="suite-card__count">6 tests</div>
+      </div>
+      <ul class="test-list">
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>solo se muestran citas asignadas al médico actual</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>citas de otro médico no aparecen en el panel</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>filtro "pendiente" devuelve solo las pendientes del médico</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>filtro "confirmada" devuelve solo las confirmadas del médico</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>stats: citas de hoy se cuentan correctamente</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>stats: total pendientes se cuenta sobre todas las fechas</li>
+      </ul>
+    </div>
+
+    <!-- Suite 4 -->
+    <div class="suite-card" id="suite-4">
+      <div class="suite-card__head">
+        <div class="suite-card__num" style="background:rgba(124,58,237,.15);color:#a78bfa">4</div>
+        <div class="suite-card__name">Agenda — franjas horarias</div>
+        <div class="suite-card__count">9 tests</div>
+      </div>
+      <ul class="test-list">
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>crear un slot lo persiste en localStorage</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>slot tiene todos los campos requeridos</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>franja sin citas se detecta como disponible</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>franja con cita pendiente se detecta como reservada</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>franja con cita confirmada se detecta como reservada</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>franja con cita cancelada sigue disponible</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>franja con cita rechazada sigue disponible</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>eliminar un slot libre lo borra del storage</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>no se puede eliminar un slot reservado (regla de negocio)</li>
+      </ul>
+    </div>
+
+    <!-- Suite 5 -->
+    <div class="suite-card" id="suite-5">
+      <div class="suite-card__head">
+        <div class="suite-card__num" style="background:rgba(34,197,94,.12);color:var(--green)">5</div>
+        <div class="suite-card__name">Flujo completo paciente → médico</div>
+        <div class="suite-card__count">9 tests</div>
+      </div>
+      <ul class="test-list">
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>login guarda el nombre del usuario en sessionStorage</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>confirmarCita() usa el nombre de sesión como paciente</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>confirmarCita() traduce el value del select al nombre del médico</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>confirmarCita() traduce el value del select a nombre de especialidad</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>cita agendada por el paciente llega con estado "pendiente"</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>cita del paciente aparece en las solicitudes del médico</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>el médico puede confirmar la cita del paciente</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>cita confirmada deja de aparecer en solicitudes pendientes</li>
+        <li><div class="test-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>varios pacientes pueden agendar citas independientes</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function toggle(head) {
+    head.closest('.typedef').classList.toggle('open');
+  }
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('[id]');
+  const navLinks  = document.querySelectorAll('nav a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`nav a[href="#${e.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

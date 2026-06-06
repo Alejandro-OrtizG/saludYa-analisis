@@ -114,7 +114,12 @@
         <div style="display: none" id="view-citas">
           <section class="citas-calendario">
             <div class="citas-cal__header">
-              <h3>Gestión de Citas</h3>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <h3>Gestión de Citas</h3>
+                <button onclick="exportarCSV()" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;font-size:12px;font-weight:600;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;border-radius:6px;cursor:pointer;font-family:inherit;transition:background 0.15s;" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'">
+                  <i data-lucide="download" style="width:13px;height:13px;"></i> Exportar CSV
+                </button>
+              </div>
               <div class="filter-tabs">
                 <button
                   class="filter-tab filter-tab--active"
@@ -632,6 +637,28 @@
         const n = new Date();
         document.getElementById("header-date").textContent =
           `${DIAS_ES[n.getDay()].charAt(0).toUpperCase() + DIAS_ES[n.getDay()].slice(1)}, ${n.getDate()} de ${MESES[n.getMonth()].toLowerCase()} del ${n.getFullYear()} · Dra. Paula García`;
+      }
+
+      function exportarCSV() {
+        const todas = getCitas().filter(c => c.medico === MEDICO_ACTUAL);
+        const datos = filtroActual === 'todas' ? todas : todas.filter(c => c.estado === filtroActual);
+
+        const escape = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+        const cabecera = ['ID','Paciente','Médico','Especialidad','Fecha','Hora','Estado'];
+        const filas = datos.map(c =>
+          [c.id, c.paciente, c.medico, c.especialidad, c.fecha, c.hora, c.estado].map(escape).join(',')
+        );
+
+        const csv = '﻿' + [cabecera.join(','), ...filas].join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = `citas_saludya_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
       }
 
       function renderAll() {
